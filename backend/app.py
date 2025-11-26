@@ -21,7 +21,7 @@ if not GEMINI_API_KEY:
     raise RuntimeError("GEMINI_API_KEY not set. Put it in .env or environment variables.")
 
 genai.configure(api_key=GEMINI_API_KEY)
-model = genai.GenerativeModel("gemini-2.5-flash")
+model = genai.GenerativeModel("gemini-2.0-flash-exp")
 
 
 # ---------- Models ----------
@@ -274,3 +274,6 @@ async def analyze_content(payload: AnalyzeRequest):
         raise HTTPException(status_code=500, detail=str(e))
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Model error: {e}")
+
+# Vercel serverless function handler
+handler = app
