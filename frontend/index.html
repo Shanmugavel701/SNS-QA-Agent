@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>SNS Square QA Agent</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <!-- Hero -->
+  <header class="hero">
+    <h1>SNS Square - QA Agent</h1>
+    <p>Your last step before posting. Cleaner content, better engagement.</p>
+  </header>
+
+  <!-- QA Tool Section (2-Column Layout) -->
+  <section class="qa-section">
+    <div class="two-column-layout">
+
+      <!-- Left Column: Input Form -->
+      <div class="input-card">
+        <h2>Input</h2>
+        <form id="qa-form">
+          <div class="field">
+            <label for="platform">Platform</label>
+            <select id="platform" name="platform">
+              <option value="instagram">Instagram</option>
+              <option value="youtube">YouTube</option>
+              <option value="blog">Blog</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="title">Title</label>
+            <input type="text" id="title" placeholder="Video title or headline">
+          </div>
+
+          <div class="field">
+            <label for="content">Content</label>
+            <textarea id="content" name="content" rows="6"
+              placeholder="Paste your caption, script or blog content here..." required></textarea>
+          </div>
+
+          <div class="field">
+            <label for="hashtags">Hashtags</label>
+            <input type="text" id="hashtags" placeholder="#marketing, #growth">
+          </div>
+
+          <div class="field">
+            <label for="geo">Geo</label>
+            <input type="text" id="geo" placeholder="e.g. India">
+          </div>
+
+          <div class="field">
+            <label for="niche">Niche</label>
+            <input type="text" id="niche" placeholder="e.g. Tech">
+          </div>
+
+          <div class="field">
+            <label for="target_audience">Target Audience</label>
+            <input type="text" id="target_audience" placeholder="e.g. Students">
+          </div>
+
+          <button type="submit" class="btn-submit">
+            <span id="btn-text">Run QA Analysis</span>
+            <span id="btn-spinner" class="spinner hidden"></span>
+          </button>
+        </form>
+      </div>
+
+      <!-- Right Column: Results -->
+      <div class="results-card">
+        <h2>Results</h2>
+
+        <!-- Empty State -->
+        <div id="result-empty" class="empty-state">
+          <p>Fill the form and click <strong>Run QA Analysis</strong> to see the results.</p>
+        </div>
+
+        <!-- Results Content (Initially Hidden) -->
+        <div id="result-content" class="hidden">
+          <div class="score-section">
+            <div class="score-label-small">OVERALL SCORE</div>
+            <div id="overall-score" class="score-big">--</div>
+          </div>
+
+          <div class="scores-grid">
+            <div class="score-item">
+              <div class="score-label-small">Quality</div>
+              <div id="score-quality" class="score-value">--</div>
+            </div>
+            <div class="score-item">
+              <div class="score-label-small">SEO</div>
+              <div id="score-seo" class="score-value">--</div>
+            </div>
+            <div class="score-item">
+              <div class="score-label-small">Engagement</div>
+              <div id="score-engagement" class="score-value">--</div>
+            </div>
+            <div class="score-item">
+              <div class="score-label-small">Structure</div>
+              <div id="score-structure" class="score-value">--</div>
+            </div>
+          </div>
+
+          <div class="result-section">
+            <h3>Key Issues</h3>
+            <ul id="issues-list" class="issues-list">
+              <li class="muted">No issues to display yet.</li>
+            </ul>
+          </div>
+
+          <div class="result-section">
+            <h3>Optimized Content</h3>
+            <div id="optimized-content" class="content-box"></div>
+          </div>
+
+          <div class="result-section">
+            <h3>Final Hashtags</h3>
+            <div id="tags-final" class="tags-container"></div>
+          </div>
+
+          <div class="result-section">
+            <h3>Trending Hashtags</h3>
+            <div id="tags-trending" class="tags-container"></div>
+          </div>
+
+          <div id="error-box" class="hidden error-message"></div>
+        </div>
+
+        <!-- Hidden elements to prevent JS errors -->
+        <div id="grammar-summary" class="hidden"></div>
+        <div id="tone-summary" class="hidden"></div>
+        <div id="cta-status" class="hidden"></div>
+        <div id="optimized-title" class="hidden"></div>
+        <div id="cta-list" class="hidden"></div>
+        <div id="score-bar-fill" class="hidden"></div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="features-section">
+    <div class="features-header">
+      <h2>Featured Capabilities</h2>
+    </div>
+
+    <div class="features-grid">
+      <!-- Card 1: Green -->
+      <div class="feature-card green">
+        <div>
+          <span class="f-tag">ANALYSIS</span>
+          <h3 class="f-title">AI Content<br>Review</h3>
+          <p class="f-desc">Instant grammar, tone, and clarity checks for all your posts.</p>
+        </div>
+        <div class="f-footer">
+          <div>
+            <div class="f-stat-label">Accuracy</div>
+            <div class="f-stat-value">98.5%</div>
+          </div>
+          <button class="f-btn">→</button>
+        </div>
+      </div>
+
+      <!-- Card 2: Black -->
+      <div class="feature-card black">
+        <div>
+          <span class="f-tag">GROWTH</span>
+          <h3 class="f-title">Hashtag<br>Optimization</h3>
+          <p class="f-desc">Get trending, niche-specific tags to boost reach.</p>
+        </div>
+        <div class="f-footer">
+          <div>
+            <div class="f-stat-label">Avg Reach</div>
+            <div class="f-stat-value">+45%</div>
+          </div>
+          <button class="f-btn">→</button>
+        </div>
+      </div>
+
+      <!-- Card 3: Purple -->
+      <div class="feature-card purple">
+        <div>
+          <span class="f-tag">STRATEGY</span>
+          <h3 class="f-title">Engagement<br>Prediction</h3>
+          <p class="f-desc">Predict how well your content will perform before posting.</p>
+        </div>
+        <div class="f-footer">
+          <div>
+            <div class="f-stat-label">Reliability</div>
+            <div class="f-stat-value">High</div>
+          </div>
+          <button class="f-btn">→</button>
+        </div>
+      </div>
+
+      <!-- Card 4: Yellow -->
+      <div class="feature-card yellow">
+        <div>
+          <span class="f-tag">SEO</span>
+          <h3 class="f-title">Search<br>Ranking</h3>
+          <p class="f-desc">Optimize titles and descriptions for maximum visibility.</p>
+        </div>
+        <div class="f-footer">
+          <div>
+            <div class="f-stat-label">SEO Score</div>
+            <div class="f-stat-value">100%</div>
+          </div>
+          <button class="f-btn">→</button>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <footer class="app-footer">
+    <p>&copy; 2025 SNS Square. All rights reserved.</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+
+</html>
