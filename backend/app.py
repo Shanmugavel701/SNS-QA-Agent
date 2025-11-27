@@ -21,21 +21,24 @@ load_dotenv(env_path)
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 
 if not GEMINI_API_KEY:
-    raise RuntimeError("GEMINI_API_KEY missing in .env")
+    print("WARNING: GEMINI_API_KEY missing in environment variables")
+    # We do not raise RuntimeError here to allow the app to start
+    # and fail only when the endpoint is called.
 
 # ------------------------------------------------------
-# Configure Gemini (v1 API, SDK 0.8.5)
+# Configure Gemini (v1 API)
 # ------------------------------------------------------
-genai.configure(api_key=GEMINI_API_KEY)
-
-model = genai.GenerativeModel(
-    model_name="gemini-2.5-flash",
-    generation_config={
-        "temperature": 0,
-        "max_output_tokens": 4096,
-        # "response_mime_type": "application/json" # Lite model might not support this
-    }
-)
+if GEMINI_API_KEY:
+    genai.configure(api_key=GEMINI_API_KEY)
+    model = genai.GenerativeModel(
+        model_name="gemini-2.5-flash",
+        generation_config={
+            "temperature": 0,
+            "max_output_tokens": 4096,
+        }
+    )
+else:
+    model = None
 
 MANDATORY_HASHTAGS = [
     "#snssquare",
@@ -123,11 +126,18 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+@app.get("/")
+def read_root():
+    return {"status": "ok", "message": "SNS QA Agent Backend is running"}
+
 # ------------------------------------------------------
 # Analyze Endpoint
 # ------------------------------------------------------
 @app.post("/analyze", response_model=AnalyzeResponse)
 async def analyze_content(payload: AnalyzeRequest):
+    if not model:
+        raise HTTPException(500, "GEMINI_API_KEY is not set. Please configure it in Vercel settings.")
+
     try:
         prompt = build_prompt(payload)
 
