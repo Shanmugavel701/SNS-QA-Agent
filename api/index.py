@@ -7,5 +7,5 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from backend.app import app
 from mangum import Mangum
 
-# Vercel handler
-handler = Mangum(app)
+# Vercel handler with api_gateway_base_path to strip /api prefix
+handler = Mangum(app, lifespan="off", api_gateway_base_path="/api")
