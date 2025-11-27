@@ -208,7 +208,11 @@ form.addEventListener("submit", async (e) => {
     } else {
       issues.forEach((issue) => {
         const li = document.createElement("li");
-        li.textContent = issue;
+        if (typeof issue === 'object' && issue !== null) {
+          li.textContent = issue.issue || issue.message || JSON.stringify(issue);
+        } else {
+          li.textContent = issue;
+        }
         issuesListEl.appendChild(li);
       });
     }

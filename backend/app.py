@@ -105,8 +105,17 @@ Niche: {req.niche}
 Target Audience: {req.target_audience}
 
 Return JSON with:
-- overall_score
-- issues_found
+- overall_score (0-100)
+- scores_breakdown:
+    - quality_score (0-100)
+    - seo_score (0-100)
+    - engagement_score (0-100)
+    - structure_score (0-100)
+- issues_found (list of strings)
+- content_checks:
+    - grammar_summary
+    - tone_summary
+    - cta_status
 - hashtag analysis
 - improvements
 - final_output (optimized title, optimized content, final_hashtag_pack)
