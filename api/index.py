@@ -5,6 +5,7 @@ import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from backend.app import app
+from mangum import Mangum
 
-# Vercel supports FastAPI directly in recent runtimes
-handler = app
+# Vercel handler
+handler = Mangum(app)
