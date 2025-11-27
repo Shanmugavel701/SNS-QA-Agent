@@ -34,7 +34,7 @@ model = genai.GenerativeModel(
     model_name="gemini-2.5-flash",
     generation_config={
         "temperature": 0,
-        "max_output_tokens": 4096,
+        "max_output_tokens": 1024,
         # "response_mime_type": "application/json" # Lite model might not support this
     }
 )
