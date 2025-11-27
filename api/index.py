@@ -5,10 +5,9 @@ import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from backend.app import app
+from mangum import Mangum
 
-# Set root_path for the app to handle /api prefix
-app.root_path = "/api"
-
-# Export the app directly for Vercel
-# Vercel will handle ASGI automatically
-handler = app
+# Vercel handler with Mangum
+# api_gateway_base_path="/api" strips /api from incoming paths
+# So /api/analyze becomes /analyze which matches your local route
+handler = Mangum(app, lifespan="off", api_gateway_base_path="/api")
