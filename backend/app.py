@@ -116,9 +116,15 @@ Return JSON with:
     - grammar_summary
     - tone_summary
     - cta_status
-- hashtag analysis
-- improvements
-- final_output (optimized title, optimized content, final_hashtag_pack)
+- hashtags:
+    - trending (list of trending hashtag suggestions relevant to {req.niche or 'the content'})
+    - suggested_replacements (list of hashtag suggestions)
+- improvements:
+    - cta_variants (list of call-to-action suggestions)
+- final_output:
+    - optimized_title
+    - optimized_content
+    - final_hashtag_pack (list including mandatory hashtags)
 """
 
 
