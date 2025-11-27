@@ -7,6 +7,8 @@ from typing import List, Optional
 
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 from dotenv import load_dotenv
 
@@ -122,6 +124,24 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+@app.get("/")
+async def read_root():
+    return FileResponse(BASE_DIR / "index.html")
+
+@app.get("/script.js")
+async def read_script():
+    return FileResponse(BASE_DIR / "script.js")
+
+@app.get("/styles.css")
+async def read_styles():
+    return FileResponse(BASE_DIR / "styles.css")
+
+@app.get("/logo.png")
+async def read_logo():
+    return FileResponse(BASE_DIR / "logo.png")
 
 # ------------------------------------------------------
 # Analyze Endpoint
