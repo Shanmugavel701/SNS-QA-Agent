@@ -17,11 +17,12 @@ import google.generativeai as genai
 
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 
-if not GEMINI_API_KEY:
-    raise RuntimeError("GEMINI_API_KEY not set. Put it in .env or environment variables.")
-
-genai.configure(api_key=GEMINI_API_KEY)
-model = genai.GenerativeModel("gemini-2.0-flash-exp")
+# Configure Gemini if API key is available
+if GEMINI_API_KEY:
+    genai.configure(api_key=GEMINI_API_KEY)
+    model = genai.GenerativeModel("gemini-2.0-flash-exp")
+else:
+    model = None
 
 
 # ---------- Models ----------
@@ -258,6 +259,9 @@ app.add_middleware(
 @app.post("/analyze", response_model=AnalyzeResponse)
 async def analyze_content(payload: AnalyzeRequest):
     try:
+        if not model:
+            raise HTTPException(status_code=503, detail="GEMINI_API_KEY is not configured on the server.")
+
         prompt = build_prompt(payload)
 
         response = model.generate_content(prompt)
