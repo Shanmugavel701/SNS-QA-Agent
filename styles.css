@@ -215,7 +215,8 @@ ul {
   line-height: 1;
 }
 
-/* Dynamic Score Colors */
+/* Dynamic Score Colors - Disabled to keep all scores black */
+/*
 .score-big.excellent,
 .score-value.excellent {
   color: var(--accent-green);
@@ -235,6 +236,7 @@ ul {
 .score-value.poor {
   color: #ff9b9b;
 }
+*/
 
 .scores-grid {
   display: grid;
