@@ -2,9 +2,7 @@
 
 const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
   ? "http://localhost:8000"
-  : window.location.hostname.includes('onrender.com')
-    ? ""
-    : "/api";
+  : ""; // Production (Render with or without custom domain) - no prefix needed
 
 const form = document.getElementById("qa-form");
 const btnText = document.getElementById("btn-text");
