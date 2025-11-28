@@ -2,6 +2,7 @@
 
 import os
 import json
+import time
 from pathlib import Path
 from typing import List, Optional
 
@@ -13,6 +14,7 @@ from pydantic import BaseModel
 from dotenv import load_dotenv
 
 import google.generativeai as genai
+from google.api_core import exceptions
 
 # ------------------------------------------------------
 # Load Environment Variables
@@ -26,18 +28,29 @@ if not GEMINI_API_KEY:
     raise RuntimeError("GEMINI_API_KEY missing in .env")
 
 # ------------------------------------------------------
-# Configure Gemini (v1 API, SDK 0.8.5)
+# Configure Gemini
 # ------------------------------------------------------
 genai.configure(api_key=GEMINI_API_KEY)
 
 model = genai.GenerativeModel(
-    model_name="gemini-2.0-flash",
+    model_name="gemini-flash-latest",
     generation_config={
         "temperature": 0,
         "max_output_tokens": 4096,
-        # "response_mime_type": "application/json" # Lite model might not support this
     }
 )
+
+def generate_with_retry(prompt, retries=3, delay=2):
+    for attempt in range(retries):
+        try:
+            return model.generate_content(prompt)
+        except exceptions.ResourceExhausted:
+            if attempt < retries - 1:
+                time.sleep(delay * (2 ** attempt))  # Exponential backoff
+                continue
+            raise
+        except Exception:
+            raise
 
 MANDATORY_HASHTAGS = [
     "#snssquare",
@@ -166,7 +179,7 @@ async def analyze_content(payload: AnalyzeRequest):
     try:
         prompt = build_prompt(payload)
 
-        response = model.generate_content(prompt)
+        response = generate_with_retry(prompt)
 
         # NEW v1 API returns clean JSON directly
         raw = response.text
