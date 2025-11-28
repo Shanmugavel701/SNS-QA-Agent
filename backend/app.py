@@ -31,10 +31,10 @@ if not GEMINI_API_KEY:
 genai.configure(api_key=GEMINI_API_KEY)
 
 model = genai.GenerativeModel(
-    model_name="gemini-2.5-flash",
+    model_name="gemini-2.0-flash",
     generation_config={
         "temperature": 0,
-        "max_output_tokens": 2048,
+        "max_output_tokens": 4096,
         # "response_mime_type": "application/json" # Lite model might not support this
     }
 )
